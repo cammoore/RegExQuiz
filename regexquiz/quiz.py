@@ -59,7 +59,8 @@ class RegExQuiz(object):
             self.show_data()
         elif command == "help":
             print "Commands:\n  #load_quiz <quiz code> - loads the given quiz,\n  #question - shows the quiz " \
-                  "question,\n  #help - shows the commands,\n  #save - saves the results to a file for submission," \
+                  "question,\n  #show_data - shows the data that the question is about,\n  #help - shows the " \
+                  "commands,\n  #save - saves the results to a file for submission," \
                   "\n  #quit - exits RegExQuiz"
 #        elif command == "data":
 #            self.set_data(args)
@@ -121,6 +122,7 @@ class RegExQuiz(object):
                         return result
                 else:
                     self.answer = exp
+                    self.save_answer()
                     return re.compile(exp)
             except Exception, e:
                 print "ERROR", e
