@@ -1,4 +1,4 @@
- Copyright (c) 2011, Zed A. Shaw
+Copyright (c) 2011, Zed A. Shaw
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
