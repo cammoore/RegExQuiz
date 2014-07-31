@@ -6,19 +6,19 @@ import re
 import sys
 import cmd
 import os
-from regexquiz.quiz import RegExQuiz
+from quiz import RegExQuiz
 
-def main():
+def main(argv):
     quiz = RegExQuiz()
 
     WELCOME = """RegExQuiz! ICS 215 RegEx quizzer.
-Type #quiz to see the quiz question. Then type in the regular
+Type #question to see the quiz question. Then type in the regular
 expression that solves the question. When you hit return the quizzer
 will show you lines that match that regex, or nothing if nothing matches.
-Hit CTRL-d to quit (CTRL-c on windows)."""
+Type #quit to quit."""
 
-    #    if len(sys.argv) >= 2:
-    #        quiz.load_input_file(sys.argv[1])
+    if len(sys.argv) >= 2:
+        quiz.load_quiz(sys.argv[1])
 
     #        if len(sys.argv) == 3:
     #            quiz.load_script(sys.argv[2])
@@ -29,4 +29,4 @@ Hit CTRL-d to quit (CTRL-c on windows)."""
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
