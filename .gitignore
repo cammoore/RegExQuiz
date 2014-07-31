@@ -1,3 +1,6 @@
 *.pyc
 RegExQuiz.iml
 .idea
+build
+dist
+regexquiz.egg-info
