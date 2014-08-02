@@ -32,6 +32,7 @@ Type #quit to quit."""
         print "Load the quiz using '#load_quiz <quiz code>'"
         print
 
+    quiz.setup_readline()
     quiz.run_input_loop()
 
 

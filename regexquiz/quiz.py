@@ -28,6 +28,7 @@ class RegExQuiz(object):
         self.match_mode = False
         self.answer = None
         self.prompt = "quiz >"
+        self.last = None
 
     @staticmethod
     def setup_readline():
@@ -48,7 +49,10 @@ class RegExQuiz(object):
 
             readline.parse_and_bind("TAB: complete")
         except ImportError:
-            print "No readline support, so no scroll back for you."
+            try:
+                import pyreadline as readline
+            except ImportError:
+                print "No readline support, so no scroll back for you."
 
     def handle_command(self, command, args):
         if command == "load_quiz":
@@ -86,10 +90,14 @@ class RegExQuiz(object):
                        self.quiz_code + ".txt"
         data_url = "http://cammoore.github.io/ics215f14/morea/020.regular-expressions/experience-quiz-" + \
                    self.quiz_code + ".data"
-        response = urllib2.urlopen(question_url)
-        self.question = response.read()
-        response = urllib2.urlopen(data_url)
-        self.data = response.readlines()
+        try:
+            response = urllib2.urlopen(question_url)
+            self.question = response.read()
+            response = urllib2.urlopen(data_url)
+            self.data = response.readlines()
+            print "Loaded Quiz " + str(args)
+        except urllib2.HTTPError:
+            print "Invalid Quiz code (" + str(args) + ")"
 
     def print_matches(self, regex):
         """Prints out the data that matches the regular expression."""
@@ -153,6 +161,7 @@ class RegExQuiz(object):
         else:
             reg, rep = pattern[1], pattern[2]
             regex = re.compile(reg)
+            self.save_replace(args)
             for i, line in enumerate(self.data):
                 if self.test_regex(regex, line):
                     print re.sub(regex, rep, line),
@@ -179,6 +188,23 @@ class RegExQuiz(object):
             f.close()
         else:
             print "No quiz loaded. Please run #load_quiz <quiz code>"
+
+    def save_replace(self, replace):
+        """Saves out the current replace string, appending the results to the end of the file."""
+        if self.quiz_code:
+            f = open(getpass.getuser() + self.quiz_code + ".txt", "a")
+            f.write(datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"))
+            f.write("\n")
+            f.write("{\n")
+            f.write("  code: ")
+            f.write(self.quiz_code)
+            f.write(",\n  answer: ")
+            f.write(str(replace))
+            f.write("\n}\n")
+            f.close()
+        else:
+            print "No quiz loaded. Please run #load_quiz <quiz code>"
+
 
     def show_data(self):
         """Shows the quiz data to the student."""
