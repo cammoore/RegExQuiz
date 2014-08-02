@@ -96,6 +96,7 @@ class RegExQuiz(object):
             response = urllib2.urlopen(data_url)
             self.data = response.readlines()
             print "Loaded Quiz " + str(args)
+            self.show_quiz()
         except urllib2.HTTPError:
             print "Invalid Quiz code (" + str(args) + ")"
 

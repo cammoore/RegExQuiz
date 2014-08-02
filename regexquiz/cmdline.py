@@ -17,22 +17,23 @@ expression that solves the question. When you hit return the quizzer
 will show you lines that match that regex, or nothing if nothing matches.
 Type #quit to quit."""
 
-    if len(sys.argv) >= 2:
-        if sys.argv[1] != '':
-            quiz.load_quiz(sys.argv[1])
 
     #        if len(sys.argv) == 3:
     #            quiz.load_script(sys.argv[2])
     #    else:
     #        quiz.setup_readline()
+    quiz.setup_readline()
+    print
     print WELCOME
     print
     if len(sys.argv) == 1 or sys.argv[1] == '':
         print "No quiz loaded."
         print "Load the quiz using '#load_quiz <quiz code>'"
         print
+    if len(sys.argv) >= 2:
+        if sys.argv[1] != '':
+            quiz.load_quiz(sys.argv[1])
 
-    quiz.setup_readline()
     quiz.run_input_loop()
 
 
