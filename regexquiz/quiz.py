@@ -29,6 +29,7 @@ class RegExQuiz(object):
         self.answer = None
         self.prompt = "quiz >"
         self.last = None
+        self.is_grading = False
 
     @staticmethod
     def setup_readline():
@@ -57,6 +58,8 @@ class RegExQuiz(object):
     def handle_command(self, command, args):
         if command == "load_quiz":
             self.load_quiz(args)
+        elif command == "grade_quiz":
+            self.grade_quiz(args)
         elif command == "question":
             self.show_quiz()
         elif command == "show_data":
@@ -99,6 +102,22 @@ class RegExQuiz(object):
         except urllib2.HTTPError:
             print "Invalid Quiz code (" + str(args) + ")"
 
+    def grade_quiz(self, args):
+        """Loads a RegEx quiz from the hard drive with the given code."""
+        self.quiz_code = args
+        self.is_grading = True
+        question_filename = "experience-quiz-" + self.quiz_code + ".txt"
+        question_dataname = "experience-quiz-" + self.quiz_code + ".data"
+        with open(question_filename, "r") as question_file:
+            self.question = question_file.read()
+        with open(question_dataname, "r") as question_data:
+            self.data = question_data.readlines()
+        print "Grading Quiz " + self.quiz_code
+        print
+        print self.question
+        print()
+        print self.data
+
     def print_matches(self, regex):
         """Prints out the data that matches the regular expression."""
         if not self.data:
@@ -129,8 +148,9 @@ class RegExQuiz(object):
                     if result:
                         return result
                 else:
-                    self.answer = exp
-                    self.save_answer()
+                    if not self.is_grading:
+                        self.answer = exp
+                        self.save_answer()
                     return re.compile(exp)
             except Exception, e:
                 print "ERROR", e

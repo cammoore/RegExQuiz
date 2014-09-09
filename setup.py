@@ -4,7 +4,7 @@ config = {
     'description': 'regexquiz is the simple shell for answering regular expression quizzes for ICS 215',
     'author': 'Cam Moore',
     'author_email': 'cmoore@hawaii.edu',
-    'version': '1.0',
+    'version': '1.1',
     'install_requires': [],
     'packages': ['regexquiz'],
     'name': 'regexquiz'
